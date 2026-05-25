@@ -1,8 +1,8 @@
-using cwiczenia5.Enums;
+﻿using cwiczenia5.Enums;
 
-namespace cwiczenia5.Models;
+namespace cwiczenia5.DTOs;
 
-public class Reservation
+public class ReservationDto
 {
     public int Id { get; set; }
     public int RoomId { get; set; }

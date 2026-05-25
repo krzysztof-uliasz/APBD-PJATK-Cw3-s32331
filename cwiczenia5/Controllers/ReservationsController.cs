@@ -1,4 +1,4 @@
-using cwiczenia5.DTOs;
+﻿using cwiczenia5.DTOs;
 using cwiczenia5.Exceptions;
 using cwiczenia5.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -7,12 +7,12 @@ namespace cwiczenia5.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class RoomsController(IRoomService service) : ControllerBase
+public class ReservationsController(IReservationService service) : ControllerBase
 {
     [HttpGet]
-    public IActionResult GetAll([FromQuery] string? buildingCode)
+    public IActionResult GetAll([FromQuery] string? organizerName)
     {
-        return Ok(service.GetAll(buildingCode));
+        return Ok(service.GetAll(organizerName));
     }
 
     [HttpGet("{id:int}")]
@@ -22,35 +22,35 @@ public class RoomsController(IRoomService service) : ControllerBase
         {
             return Ok(service.GetById(id));
         }
-        catch (RoomNotFoundException e)
+        catch (ReservationNotFoundException e)
         {
             return NotFound(e.Message);
         }
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] CreateRoomDto room)
+    public IActionResult Add([FromBody] CreateReservationDto room)
     {
-        var createdRoom = service.Add(room);
+        var createdReservation = service.Add(room);
         
         return CreatedAtAction(
             nameof(GetById), 
-            new { id = createdRoom.Id },
-            createdRoom
+            new { id = createdReservation.Id },
+            createdReservation
         );
     }
 
     [HttpPut("{id:int}")]
     public IActionResult Update(
         [FromRoute] int id, 
-        [FromBody] UpdateRoomDto room
+        [FromBody] UpdateReservationDto room
     )
     {
         try
         {
             return Ok(service.Update(id, room));
         }
-        catch (RoomNotFoundException e)
+        catch (ReservationNotFoundException e)
         {
             return NotFound(e.Message);
         }
@@ -64,7 +64,7 @@ public class RoomsController(IRoomService service) : ControllerBase
             service.Remove(id);
             return NoContent();
         }
-        catch (RoomNotFoundException e)
+        catch (ReservationNotFoundException e)
         {
             return NotFound(e.Message);
         }
