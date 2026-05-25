@@ -3,7 +3,7 @@ using cwiczenia5.Models;
 
 namespace cwiczenia5.Repositories;
 
-public class ReservationRepository
+public class ReservationRepository : IReservationRepository
 {
     private static int _nextId = 7; // start after seed data
     private readonly List<Reservation> _reservations = SeedData.Reservations;

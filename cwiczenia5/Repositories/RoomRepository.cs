@@ -3,7 +3,7 @@ using cwiczenia5.Models;
 
 namespace cwiczenia5.Repositories;
 
-public class RoomRepository
+public class RoomRepository : IRoomRepository
 {
     private static int _nextId = 6; // start after seed data
     private readonly List<Room> _rooms = SeedData.Rooms;

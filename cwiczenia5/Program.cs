@@ -1,3 +1,6 @@
+using cwiczenia5.Repositories;
+using cwiczenia5.Services;
+
 namespace cwiczenia5;
 
 public class Program
@@ -11,7 +14,17 @@ public class Program
 
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
+        
+        builder.Services.AddControllers();
+        
+        // Register repositories
+        builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+        builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
+        // Register services
+        builder.Services.AddScoped<IRoomService, RoomService>();
+        builder.Services.AddScoped<IReservationService, ReservationService>();
+        
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -19,6 +32,8 @@ public class Program
         {
             app.MapOpenApi();
         }
+        
+        app.MapControllers();
 
         app.UseHttpsRedirection();
 
