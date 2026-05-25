@@ -1,11 +1,12 @@
-﻿using cwiczenia5.Models;
+﻿using cwiczenia5.Data;
+using cwiczenia5.Models;
 
 namespace cwiczenia5.Repositories;
 
 public class RoomRepository
 {
-    private static int _nextId = 1;
-    private readonly List<Room> _rooms = [];
+    private static int _nextId = 6; // start after seed data
+    private readonly List<Room> _rooms = SeedData.Rooms;
     
     public IEnumerable<Room> GetAll()
     {

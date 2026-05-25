@@ -23,7 +23,6 @@ public static class RoomMappingExtensions
     {
         return new Room
         {
-            Id = dto.Id,
             Name = dto.Name,
             BuildingCode = dto.BuildingCode,
             Floor = dto.Floor,
@@ -37,7 +36,6 @@ public static class RoomMappingExtensions
     {
         return new Room
         {
-            Id = dto.Id,
             Name = dto.Name,
             BuildingCode = dto.BuildingCode,
             Floor = dto.Floor,

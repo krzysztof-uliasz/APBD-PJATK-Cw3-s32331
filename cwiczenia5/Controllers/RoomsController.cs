@@ -14,6 +14,12 @@ public class RoomsController(IRoomService service) : ControllerBase
     {
         return Ok(service.GetAll(buildingCode));
     }
+    
+    [HttpGet("building/{buildingCode}")]
+    public IActionResult GetByBuilding([FromRoute] string buildingCode)
+    {
+        return Ok(service.GetAll(buildingCode));
+    }
 
     [HttpGet("{id:int}")]
     public IActionResult GetById([FromRoute] int id)
@@ -55,7 +61,7 @@ public class RoomsController(IRoomService service) : ControllerBase
             return NotFound(e.Message);
         }
     }
-
+    
     [HttpDelete("{id:int}")]
     public IActionResult Delete([FromRoute] int id)
     {
@@ -67,6 +73,10 @@ public class RoomsController(IRoomService service) : ControllerBase
         catch (RoomNotFoundException e)
         {
             return NotFound(e.Message);
+        }
+        catch (RoomHasReservationsException e)
+        {
+            return Conflict(e.Message);
         }
     }
 }

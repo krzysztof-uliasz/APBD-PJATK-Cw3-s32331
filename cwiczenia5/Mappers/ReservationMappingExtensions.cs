@@ -24,7 +24,6 @@ public static class ReservationMappingExtensions
     {
         return new Reservation
         {
-            Id = dto.Id,
             RoomId = dto.RoomId,
             OrganizerName =  dto.OrganizerName,
             Topic =  dto.Topic,
@@ -39,7 +38,6 @@ public static class ReservationMappingExtensions
     {
         return new Reservation
         {
-            Id = dto.Id,
             RoomId = dto.RoomId,
             OrganizerName =  dto.OrganizerName,
             Topic =  dto.Topic,

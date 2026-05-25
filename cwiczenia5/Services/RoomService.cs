@@ -5,19 +5,21 @@ using cwiczenia5.Repositories;
 
 namespace cwiczenia5.Services;
 
-public class RoomService(IRoomRepository repository) : IRoomService
+public class RoomService(
+    IRoomRepository roomRepository,
+    IReservationRepository reservationRepository) : IRoomService
 {
     public IEnumerable<RoomDto> GetAll(string? buildingCode)
     {
         return (string.IsNullOrEmpty(buildingCode)
-                ? repository.GetAll()
-                : repository.GetByBuildingCode(buildingCode))
+                ? roomRepository.GetAll()
+                : roomRepository.GetByBuildingCode(buildingCode))
             .Select(room => room.ToDto());
     }
 
     public RoomDto GetById(int id)
     {
-        var room = repository.GetById(id);
+        var room = roomRepository.GetById(id);
 
         return room is null 
             ? throw new RoomNotFoundException(id) 
@@ -27,7 +29,7 @@ public class RoomService(IRoomRepository repository) : IRoomService
     public RoomDto Add(CreateRoomDto room)
     {
         var roomToAdd = room.ToDomain();
-        repository.Add(roomToAdd);
+        roomRepository.Add(roomToAdd);
         
         return roomToAdd.ToDto();
     }
@@ -37,20 +39,23 @@ public class RoomService(IRoomRepository repository) : IRoomService
         var roomToUpdate = room.ToDomain();
         roomToUpdate.Id = id;
 
-        return !repository.Update(roomToUpdate) 
+        return !roomRepository.Update(roomToUpdate) 
             ? throw new RoomNotFoundException(id) 
             : roomToUpdate.ToDto();
     }
 
     public void Remove(int id)
     {
-        var roomToDelete = repository.GetById(id);
-        
-        if (roomToDelete is null)
-        {
+        var room = roomRepository.GetById(id);
+        if (room is null)
             throw new RoomNotFoundException(id);
-        }
-        
-        repository.Remove(roomToDelete);
+
+        var hasFutureReservations = reservationRepository.GetAll()
+            .Any(r => r.RoomId == id && r.Date >= DateOnly.FromDateTime(DateTime.Today));
+
+        if (hasFutureReservations)
+            throw new RoomHasReservationsException(id);
+
+        roomRepository.Remove(room);
     }
 }

@@ -3,10 +3,8 @@ using cwiczenia5.Enums;
 
 namespace cwiczenia5.DTOs;
 
-public class UpdateReservationDto
+public class UpdateReservationDto : IValidatableObject
 {
-    [Required]
-    public int Id { get; set; }
     [Required]
     public int RoomId { get; set; }
     [MaxLength(100), Required]
@@ -14,11 +12,18 @@ public class UpdateReservationDto
     [MaxLength(100), Required]
     public string Topic { get; set; } = string.Empty;
     [Required]
-    public DateTime StartTime { get; set; }
+    public TimeOnly StartTime { get; set; }
     [Required]
-    public DateTime EndTime { get; set; }
+    public TimeOnly EndTime { get; set; }
     [Required]
     public DateOnly Date { get; set; }
     [Required]
     public ReservationStatus Status { get; set; }
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (EndTime <= StartTime)
+            yield return new ValidationResult(
+                "EndTime must be later than StartTime.",
+                [nameof(EndTime)]);
+    }
 }

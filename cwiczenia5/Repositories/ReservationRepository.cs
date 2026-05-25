@@ -1,11 +1,12 @@
-﻿using cwiczenia5.Models;
+﻿using cwiczenia5.Data;
+using cwiczenia5.Models;
 
 namespace cwiczenia5.Repositories;
 
 public class ReservationRepository
 {
-    private static int _nextId = 1;
-    private readonly List<Reservation> _reservations = [];
+    private static int _nextId = 7; // start after seed data
+    private readonly List<Reservation> _reservations = SeedData.Reservations;
 
     public IEnumerable<Reservation> GetAll()
     {

@@ -10,9 +10,12 @@ namespace cwiczenia5.Controllers;
 public class ReservationsController(IReservationService service) : ControllerBase
 {
     [HttpGet]
-    public IActionResult GetAll([FromQuery] string? organizerName)
+    public IActionResult GetAll(
+        [FromQuery] DateOnly? date,
+        [FromQuery] string? status,
+        [FromQuery] int? roomId)
     {
-        return Ok(service.GetAll(organizerName));
+        return Ok(service.GetAll(date, status, roomId));
     }
 
     [HttpGet("{id:int}")]
@@ -29,15 +32,25 @@ public class ReservationsController(IReservationService service) : ControllerBas
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] CreateReservationDto room)
+    public IActionResult Add([FromBody] CreateReservationDto dto)
     {
-        var createdReservation = service.Add(room);
-        
-        return CreatedAtAction(
-            nameof(GetById), 
-            new { id = createdReservation.Id },
-            createdReservation
-        );
+        try
+        {
+            var created = service.Add(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+        catch (RoomNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (RoomNotActiveException e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (ReservationConflictException e)
+        {
+            return Conflict(e.Message);
+        }
     }
 
     [HttpPut("{id:int}")]
