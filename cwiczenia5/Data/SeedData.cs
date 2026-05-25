@@ -5,7 +5,7 @@ namespace cwiczenia5.Data;
 
 public static class SeedData
 {
-    public static List<Room> Rooms =>
+    public static List<Room> Rooms { get; } =
     [
         new Room { Id = 1, Name = "Lab 101", BuildingCode = "A", Floor = 1, Capacity = 20, HasProjector = true, IsActive = true },
         new Room { Id = 2, Name = "Lab 202", BuildingCode = "A", Floor = 2, Capacity = 30, HasProjector = true, IsActive = true },
@@ -14,7 +14,7 @@ public static class SeedData
         new Room { Id = 5, Name = "Konferencyjna", BuildingCode = "C", Floor = 1, Capacity = 50, HasProjector = true, IsActive = true },
     ];
 
-    public static List<Reservation> Reservations =>
+    public static List<Reservation> Reservations { get; } =
     [
         new Reservation { Id = 1, RoomId = 1, OrganizerName = "Anna Kowalska", Topic = "Warsztaty HTTP", Date = new DateOnly(2026, 6, 1), StartTime = new TimeOnly(9, 0), EndTime = new TimeOnly(11, 0), Status = ReservationStatus.Confirmed },
         new Reservation { Id = 2, RoomId = 1, OrganizerName = "Jan Nowak", Topic = "REST API Design", Date = new DateOnly(2026, 6, 2), StartTime = new TimeOnly(10, 0), EndTime = new TimeOnly(12, 0), Status = ReservationStatus.Planned },

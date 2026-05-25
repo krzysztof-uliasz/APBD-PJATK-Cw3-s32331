@@ -41,7 +41,7 @@ public class RoomRepository : IRoomRepository
         existing.BuildingCode = room.BuildingCode;
         existing.Floor = room.Floor;
         existing.Capacity = room.Capacity;
-        existing.HasProjector = room.IsActive;
+        existing.HasProjector = room.HasProjector;
         existing.IsActive = room.IsActive;
         return true;
     }
